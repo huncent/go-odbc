@@ -707,7 +707,10 @@ func (stmt *Statement) FieldMetadata(col int) (*Field, *ODBCError) {
 }
 
 func (stmt *Statement) free() {
-	C.SQLFreeHandle(C.SQL_HANDLE_STMT, stmt.handle)
+	if stmt.handle != nil{
+		C.SQLFreeHandle(C.SQL_HANDLE_STMT, stmt.handle)
+		stmt.handle = nil
+	}
 }
 
 func (stmt *Statement) Close() {
